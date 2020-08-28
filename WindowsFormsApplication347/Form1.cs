@@ -128,13 +128,6 @@ namespace WindowsFormsApplication347
         {
 
         }
-        private void Writer()
-        {
-            string markedData = CurrentFrame.Substring(0, CurrentFrame.LastIndexOf('/')) + "marked.txt";
-            var fs = new FileStream(markedData, FileMode.Append);
-
-
-        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
