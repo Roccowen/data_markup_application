@@ -1,0 +1,27 @@
+C:\Projects_CSharp\Examples\WindowsFormsApplication347\WindowsFormsApplication347\bin\Debug\WindowsFormsApplication347.exe
+C:\Projects_CSharp\Examples\WindowsFormsApplication347\WindowsFormsApplication347\bin\Debug\WindowsFormsApplication347.pdb
+C:\Projects_CSharp\Examples\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.Form1.resources
+C:\Projects_CSharp\Examples\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.Properties.Resources.resources
+C:\Projects_CSharp\Examples\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.csproj.GenerateResource.Cache
+C:\Projects_CSharp\Examples\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.exe
+C:\Projects_CSharp\Examples\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.pdb
+C:\Projects_CSharp\Examples\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.csprojResolveAssemblyReference.cache
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\bin\Debug\WindowsFormsApplication347.exe
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\bin\Debug\WindowsFormsApplication347.pdb
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.csprojAssemblyReference.cache
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.Form1.resources
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.Properties.Resources.resources
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.csproj.GenerateResource.cache
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.csproj.CoreCompileInputs.cache
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.exe
+d:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.pdb
+d:\same shit\data_markup_application\WindowsFormsApplication347\bin\Debug\markup_data_app.exe.config
+d:\same shit\data_markup_application\WindowsFormsApplication347\bin\Debug\markup_data_app.exe
+d:\same shit\data_markup_application\WindowsFormsApplication347\bin\Debug\markup_data_app.pdb
+d:\same shit\data_markup_application\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.csprojAssemblyReference.cache
+d:\same shit\data_markup_application\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.Form1.resources
+d:\same shit\data_markup_application\WindowsFormsApplication347\obj\x86\Debug\markup_data_app.Properties.Resources.resources
+d:\same shit\data_markup_application\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.csproj.GenerateResource.cache
+d:\same shit\data_markup_application\WindowsFormsApplication347\obj\x86\Debug\WindowsFormsApplication347.csproj.CoreCompileInputs.cache
+d:\same shit\data_markup_application\WindowsFormsApplication347\obj\x86\Debug\markup_data_app.exe
+d:\same shit\data_markup_application\WindowsFormsApplication347\obj\x86\Debug\markup_data_app.pdb

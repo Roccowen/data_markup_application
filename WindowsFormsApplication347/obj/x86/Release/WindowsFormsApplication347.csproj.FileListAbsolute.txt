@@ -1,0 +1,9 @@
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\bin\Release\WindowsFormsApplication347.exe
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\bin\Release\WindowsFormsApplication347.pdb
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Release\WindowsFormsApplication347.csprojAssemblyReference.cache
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Release\WindowsFormsApplication347.Form1.resources
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Release\WindowsFormsApplication347.Properties.Resources.resources
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Release\WindowsFormsApplication347.csproj.GenerateResource.cache
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Release\WindowsFormsApplication347.csproj.CoreCompileInputs.cache
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Release\WindowsFormsApplication347.exe
+D:\Downloads\WindowsFormsApplication347\WindowsFormsApplication347\obj\x86\Release\WindowsFormsApplication347.pdb
