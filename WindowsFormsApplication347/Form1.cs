@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
+using markup_data_app;
 
 namespace WindowsFormsApplication347
 {
@@ -22,10 +20,10 @@ namespace WindowsFormsApplication347
 
         string[] FramesPaths;
         string CurrentFrame;
+        string CurrentMarks;
+        string CurrentDir;
         int Position;
-        string FormatsPattern = @"(.*\.jpg|.*\.png|.*\.jpeg|.*\.bmp)";
-        Stack<Image> Changes = new Stack<Image>(5);
-
+        string ReadableFormatsPattern = @"(.*\.jpg|.*\.png|.*\.jpeg|.*\.bmp)";
 
         Rectangle GetRect(Point p1, Point p2)
         {
@@ -47,8 +45,9 @@ namespace WindowsFormsApplication347
                     {                        
                         PictureBox1.Image = Image.FromFile(ofd.FileName);
                         CurrentFrame = Path.GetFullPath(ofd.FileName);
-                        FramesPaths = Directory.GetFiles(Path.GetDirectoryName(ofd.FileName))
-                            .Where(n => Regex.IsMatch(n, FormatsPattern))
+                        CurrentDir = Path.GetFullPath(Path.GetDirectoryName(ofd.FileName));
+                        FramesPaths = Directory.GetFiles(CurrentDir)
+                            .Where(n => Regex.IsMatch(n, ReadableFormatsPattern))
                             .OrderBy(n => n)
                             .ToArray();
                         Position = Array.IndexOf(FramesPaths, CurrentFrame);
@@ -95,7 +94,8 @@ namespace WindowsFormsApplication347
                 {
                     img.DrawRectangle(pen, rect);
                 }
-                // rect.X,  rect.Y, rect.Height, rect.Width      
+
+                CurrentMarks += "(" + rect.X + "," + rect.Y + ":" + (rect.X + rect.Width) + "," + (rect.Y - rect.Height) + ") ";    
             }
             PictureBox1.Invalidate();
         }
@@ -111,8 +111,10 @@ namespace WindowsFormsApplication347
             Position += 1;
             if (Position >= FramesPaths.Length)
                 Position = 0;
-            PictureBox1.Image.Dispose();
-            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);                       
+            PictureBox1.Image.Dispose();            
+            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
+            WriteMarks();
+            CurrentFrame = FramesPaths[Position];
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -122,11 +124,13 @@ namespace WindowsFormsApplication347
                 Position = FramesPaths.Length - 1;
             PictureBox1.Image.Dispose();
             PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
+            WriteMarks();
+            CurrentFrame = FramesPaths[Position];
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -143,21 +147,22 @@ namespace WindowsFormsApplication347
                 Size picSize = this.PictureBox1.Image.Size;
                 Size panSize = this.panel1.Size;
                 if (picSize.Height < panSize.Height)
-                {
                     this.PictureBox1.Location = new Point(this.PictureBox1.Location.X, (panSize.Height - picSize.Height) / 2);
-                }
                 else
-                {
                     this.PictureBox1.Location = new Point(this.PictureBox1.Location.X, 0);
-                }
                 if (picSize.Width < panSize.Width)
-                {
                     this.PictureBox1.Location = new Point((panSize.Width - picSize.Width) / 2, this.PictureBox1.Location.Y);
-                }
                 else
-                {
                     this.PictureBox1.Location = new Point(0, this.PictureBox1.Location.Y);
-                }
+            }
+        }
+        private void WriteMarks()
+        {
+            if (CurrentMarks != null)
+            {
+                var dataBaseIO = new DataBaseIO(CurrentDir + @"\marks_database.db");
+                dataBaseIO.WriteMarks(CurrentFrame, CurrentMarks);
+                CurrentMarks = null;
             }
         }
     }
