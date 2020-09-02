@@ -119,6 +119,15 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Icons\open.png" />
+    <Content Include="Icons\open1.png" />
+    <Content Include="Icons\del.png" />
+    <Content Include="Icons\copy.png" />
+    <Content Include="Icons\right.png" />
+    <Content Include="Icons\left.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

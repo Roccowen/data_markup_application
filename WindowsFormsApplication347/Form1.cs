@@ -34,41 +34,6 @@ namespace WindowsFormsApplication347
             return new Rectangle(x1, y1, x2 - x1, y2 - y1);
         }
 
-        private void selectImage_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                using (OpenFileDialog ofd = new OpenFileDialog())
-                {
-                    ofd.Filter = "Файлы изображений|*.jpg;*.png;*.jpeg;*.bmp";
-                    if (ofd.ShowDialog() == DialogResult.OK)
-                    {                        
-                        PictureBox1.Image = Image.FromFile(ofd.FileName);
-                        CurrentFrame = Path.GetFullPath(ofd.FileName);
-                        CurrentDir = Path.GetFullPath(Path.GetDirectoryName(ofd.FileName));
-                        FramesPaths = Directory.GetFiles(CurrentDir)
-                            .Where(n => Regex.IsMatch(n, ReadableFormatsPattern))
-                            .OrderBy(n => n)
-                            .ToArray();
-                        Position = Array.IndexOf(FramesPaths, CurrentFrame);
-                    }
-                }
-            }
-            catch 
-            {
-                FramesPaths = null;
-                CurrentFrame = null;
-                Position = 0;
-            }
-            if (PictureBox1.Image != null)
-            {
-                PictureBox1.Enabled = true;
-                button2.Enabled = true;
-                button3.Enabled = true;
-                button4.Enabled = true;
-            }       
-        }
-
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -106,33 +71,6 @@ namespace WindowsFormsApplication347
                 ControlPaint.DrawFocusRectangle(e.Graphics, GetRect(MousePos1, MousePos2));
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {            
-            Position += 1;
-            if (Position >= FramesPaths.Length)
-                Position = 0;
-            PictureBox1.Image.Dispose();            
-            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
-            WriteMarks();
-            CurrentFrame = FramesPaths[Position];
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            Position -= 1;
-            if (Position <= 0)
-                Position = FramesPaths.Length - 1;
-            PictureBox1.Image.Dispose();
-            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
-            WriteMarks();
-            CurrentFrame = FramesPaths[Position];
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             this.PictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -160,10 +98,71 @@ namespace WindowsFormsApplication347
         {
             if (CurrentMarks != null)
             {
-                var dataBaseIO = new DataBaseIO(CurrentDir + @"\marks_database.db");
+                var dataBaseIO = new DataBaseIO(CurrentDir + @"_marks_database.db");
                 dataBaseIO.WriteMarks(CurrentFrame, CurrentMarks);
                 CurrentMarks = null;
             }
+        }
+
+        private void toolStripOpen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (OpenFileDialog ofd = new OpenFileDialog())
+                {
+                    ofd.Filter = "Файлы изображений|*.jpg;*.png;*.jpeg;*.bmp";
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        PictureBox1.Image = Image.FromFile(ofd.FileName);
+                        CurrentFrame = Path.GetFullPath(ofd.FileName);
+                        CurrentDir = Path.GetFullPath(Path.GetDirectoryName(ofd.FileName));
+                        FramesPaths = Directory.GetFiles(CurrentDir)
+                            .Where(n => Regex.IsMatch(n, ReadableFormatsPattern))
+                            .OrderBy(n => n)
+                            .ToArray();
+                        Position = Array.IndexOf(FramesPaths, CurrentFrame);
+                    }
+                }
+            }
+            catch
+            {
+                FramesPaths = null;
+                CurrentFrame = null;
+                Position = 0;
+            }
+            if (PictureBox1.Image != null)
+            {
+                PictureBox1.Enabled = true;
+                toolStripNext.Enabled = true;
+                toolStripPrev.Enabled = true;
+            }
+        }
+
+        private void toolStripNext_Click(object sender, EventArgs e)
+        {
+            Position += 1;
+            if (Position >= FramesPaths.Length)
+                Position = 0;
+            PictureBox1.Image.Dispose();
+            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
+            WriteMarks();
+            CurrentFrame = FramesPaths[Position];
+        }
+
+        private void toolStripPrev_Click(object sender, EventArgs e)
+        {
+            Position -= 1;
+            if (Position <= 0)
+                Position = FramesPaths.Length - 1;
+            PictureBox1.Image.Dispose();
+            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
+            WriteMarks();
+
+            CurrentFrame = FramesPaths[Position];
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

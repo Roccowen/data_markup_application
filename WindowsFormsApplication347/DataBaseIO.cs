@@ -23,15 +23,14 @@ namespace markup_data_app
             string commandText = "CREATE TABLE IF NOT EXISTS [markup_data] ( " +               
                 "[path] TEXT PRIMARY KEY NOT NULL, " +
                 "[marks] TEXT)";
+            dbConnection.Open();
             ExecuteCommand(commandText);
         }
         private void ExecuteCommand(string commandText = null, SQLiteCommand sQLiteCommand = null)
-        {
+        {            
             if (sQLiteCommand == null)
                 sQLiteCommand = new SQLiteCommand(commandText, dbConnection);
-            dbConnection.Open();
-            sQLiteCommand.ExecuteNonQuery();
-            dbConnection.Close();
+            sQLiteCommand.ExecuteNonQuery();                       
         }
         public void WriteMarks(string path, string marks)
         {
@@ -47,15 +46,11 @@ namespace markup_data_app
             {
                 string commandText = "UPDATE [markup_data] SET [marks] = @marks WHERE [path] = @path";
                 var command = new SQLiteCommand(commandText, dbConnection);
-                command.Parameters.AddWithValue("@path", path);
                 command.Parameters.AddWithValue("@marks", marks);
+                command.Parameters.AddWithValue("@path", path);
                 ExecuteCommand(commandText, command);
             }
         }
-
-
-
-
 
     }
 }
