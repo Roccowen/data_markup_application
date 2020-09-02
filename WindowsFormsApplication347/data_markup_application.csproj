@@ -7,7 +7,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{524BEAFB-3013-4960-B9BC-D317B65EA41F}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>markup_data_app</RootNamespace>
     <AssemblyName>markup_data_app</AssemblyName>
@@ -85,7 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataBaseIO.cs" />
+    <Compile Include="DBController.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Icons\save.png" />
     <Content Include="Icons\open.png" />
     <Content Include="Icons\open1.png" />
     <Content Include="Icons\del.png" />

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using markup_data_app;
+using System.Collections.Generic;
 
 namespace WindowsFormsApplication347
 {
@@ -20,10 +21,12 @@ namespace WindowsFormsApplication347
 
         string[] FramesPaths;
         string CurrentFrame;
-        string CurrentMarks;
+        List<Rectangle> CurrentMarks = new List<Rectangle>();
+        List<Rectangle> PreviousMarks= new List<Rectangle>();
         string CurrentDir;
         int Position;
         string ReadableFormatsPattern = @"(.*\.jpg|.*\.png|.*\.jpeg|.*\.bmp)";
+        string OpenFileHint = "Файлы изображений|*.jpg;*.png;*.jpeg;*.bmp";
 
         Rectangle GetRect(Point p1, Point p2)
         {
@@ -33,7 +36,28 @@ namespace WindowsFormsApplication347
             var y2 = Math.Max(p1.Y, p2.Y);
             return new Rectangle(x1, y1, x2 - x1, y2 - y1);
         }
-
+        private void WriteMarksToDB()
+        {
+            if (CurrentMarks.Count != 0)
+            {
+                var dataBaseIO = new DBController(CurrentDir + @"_marks_database.db");
+                var marks = "";
+                foreach (var rect in CurrentMarks)
+                    marks += "(" + rect.X + "," + rect.Y + ":" + (rect.X + rect.Width) + "," + (rect.Y - rect.Height) + ") ";
+                dataBaseIO.WriteMarks(CurrentFrame, marks);                
+            }
+        }
+        private void ChangeFrame()
+        {
+            PictureBox1.Image.Dispose();
+            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
+            CurrentFrame = FramesPaths[Position];
+            toolStripCopy.Enabled = true;
+            if (CurrentMarks.Count != 0)
+                PreviousMarks = CurrentMarks;
+            CurrentMarks = new List<Rectangle>();
+            toolStripFileName.Text = CurrentFrame;
+        }
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -42,11 +66,8 @@ namespace WindowsFormsApplication347
                 PictureBox1.Invalidate();
             }
             else
-            {
                 MousePos1 = MousePos2 = e.Location;
-            }
         }
-
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             if (MousePos1 != MousePos2)
@@ -54,30 +75,24 @@ namespace WindowsFormsApplication347
                 var rect = GetRect(MousePos1, MousePos2);
 
                 Pen pen = new Pen(Color.Red, 3);
-                PictureBox1.CreateGraphics().DrawRectangle(pen, rect);
+                PictureBox1.CreateGraphics().DrawRectangle(pen, rect);              
                 using (var img = Graphics.FromImage(PictureBox1.Image))
-                {
                     img.DrawRectangle(pen, rect);
-                }
-
-                CurrentMarks += "(" + rect.X + "," + rect.Y + ":" + (rect.X + rect.Width) + "," + (rect.Y - rect.Height) + ") ";    
+                CurrentMarks.Add(new Rectangle(rect.X,rect.Y,rect.Width,rect.Height));    
             }
             PictureBox1.Invalidate();
         }
-
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             if (MousePos1 != MousePos2)
                 ControlPaint.DrawFocusRectangle(e.Graphics, GetRect(MousePos1, MousePos2));
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.PictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
-            this.panel1.AutoScroll = true;
-            this.panel1.BorderStyle = BorderStyle.FixedSingle;
+            PictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            panel1.AutoScroll = true;
+            panel1.BorderStyle = BorderStyle.FixedSingle;
         }
-
         private void panel1_Resize(object sender, EventArgs e)
         {
             if (this.PictureBox1.Image != null)
@@ -94,23 +109,13 @@ namespace WindowsFormsApplication347
                     this.PictureBox1.Location = new Point(0, this.PictureBox1.Location.Y);
             }
         }
-        private void WriteMarks()
-        {
-            if (CurrentMarks != null)
-            {
-                var dataBaseIO = new DataBaseIO(CurrentDir + @"_marks_database.db");
-                dataBaseIO.WriteMarks(CurrentFrame, CurrentMarks);
-                CurrentMarks = null;
-            }
-        }
-
         private void toolStripOpen_Click(object sender, EventArgs e)
         {
             try
             {
                 using (OpenFileDialog ofd = new OpenFileDialog())
                 {
-                    ofd.Filter = "Файлы изображений|*.jpg;*.png;*.jpeg;*.bmp";
+                    ofd.Filter = OpenFileHint;
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
                         PictureBox1.Image = Image.FromFile(ofd.FileName);
@@ -135,33 +140,71 @@ namespace WindowsFormsApplication347
                 PictureBox1.Enabled = true;
                 toolStripNext.Enabled = true;
                 toolStripPrev.Enabled = true;
+                toolStripClear.Enabled = true;
+                toolStripSave.Enabled = true;
+                toolStripCopy.Enabled = false;
+                toolStripFileName.Text = CurrentFrame;
             }
         }
-
         private void toolStripNext_Click(object sender, EventArgs e)
         {
             Position += 1;
             if (Position >= FramesPaths.Length)
                 Position = 0;
-            PictureBox1.Image.Dispose();
-            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
-            WriteMarks();
-            CurrentFrame = FramesPaths[Position];
+            ChangeFrame();
         }
-
         private void toolStripPrev_Click(object sender, EventArgs e)
         {
             Position -= 1;
             if (Position <= 0)
                 Position = FramesPaths.Length - 1;
-            PictureBox1.Image.Dispose();
-            PictureBox1.Image = Image.FromFile(FramesPaths[Position]);
-            WriteMarks();
-
-            CurrentFrame = FramesPaths[Position];
+            ChangeFrame();
         }
-        private void button4_Click(object sender, EventArgs e)
+        private void toolStripCopy_Click(object sender, EventArgs e)
         {
+            CurrentMarks = PreviousMarks;
+            foreach (var rect in CurrentMarks)
+                PictureBox1.CreateGraphics().DrawRectangle(new Pen(Color.Red, 3), rect);
+        }
+        private void toolStripClear_Click(object sender, EventArgs e)
+        {
+            CurrentMarks = new List<Rectangle>();
+            PictureBox1.Image = Image.FromFile(CurrentFrame);
+        }
+        private void toolStripSave_Click(object sender, EventArgs e)
+        {
+            WriteMarksToDB();
+        }
+        private void Form1_KeyHandler(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.S:
+                    if (toolStripSave.Enabled)
+                        toolStripSave_Click(new object(), new EventArgs());
+                    break;
+                case Keys.D:
+                    if (toolStripNext.Enabled)
+                        toolStripNext_Click(new object(), new EventArgs());
+                    break;
+                case Keys.A:
+                    if (toolStripPrev.Enabled)
+                        toolStripPrev_Click(new object(), new EventArgs());
+                    break;              
+                case Keys.C:
+                    if (toolStripCopy.Enabled)
+                        toolStripCopy_Click(new object(), new EventArgs());
+                    break;
+                case Keys.R:
+                    if (toolStripClear.Enabled)
+                        toolStripClear_Click(new object(), new EventArgs());
+                    break;
+                case Keys.O:
+                    toolStripOpen_Click(new object(), new EventArgs());
+                    break;
+                default:
+                    break;
+            }
 
         }
     }

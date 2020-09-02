@@ -8,12 +8,12 @@ using System.IO;
 
 namespace markup_data_app
 {
-    class DataBaseIO
+    class DBController
     {
         SQLiteConnection dbConnection { get; }
         string Path { get; }
 
-        public DataBaseIO(string path)
+        public DBController(string path)
         {
             Path = path;
             if (!File.Exists(Path))
